@@ -1,0 +1,86 @@
+---
+title: "US Labour Market Analysis (1967-2015)"
+author: "Ramya Sree Kolluru"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+setwd("C:/Users/kollu/Desktop/statcan-labour-analysis")
+library(tidyverse)
+data(economics)
+glimpse(economics)
+```
+```{r}
+economics %>%
+  ggplot(aes(x=date, y=unemploy))+
+  geom_line(color= "steelblue")+
+  labs(
+    title = "US Unemployment Over Time (1965-2015)",
+    x="year",
+    y="Number Unemployed (thousands)"
+  )
+
+cat("
+Between 1979 and 1983, US unemployment rose from approximately 6 million to a 
+peak of 12 million, representing a doubling of joblessness just over 4 years. 
+This period coincided with the Volcker disinflation. This is when the Federal 
+Reserve implemented a deliberate policy of raising interest rates to combat 
+double digit inflation, which supressed inflation and drove up unemployment. 
+
+The US Unemployment rose sharply from approximately 6 million to over 12 million 
+between 2008 and 2010. This spike coincides with the 2008 global financial 
+crisis, triggered by the collapse of the US housing market and subsequent 
+credit freeze.  
+")
+```
+```{r}
+economics %>%
+  ggplot(aes(x= date, y=psavert))+
+  geom_line(color="darkred")+
+  labs(
+    title = "US Personal Savings Rate Over Time (1967-2015)",
+    x = "Year",
+    y= "Personal Savings Rate (%)"
+  )
+
+cat("
+Between 1985 and 2005, the US personal savings rate declines steadily from 10% 
+to near 0%, reaching historic lows. This long run decline is attributed to 
+wealth effects from rising asset prices, the expansion of consumer credit, and 
+stagnating real wages that forced households to draw down on savings. The brief 
+spike around 2008 reflects the well documented phenomenon of precautionary 
+saving during economic crises.  
+")
+```
+
+```{r}
+economics %>%
+  ggplot(aes(x= unemploy, y = psavert))+
+  geom_point(colour = "darkgreen", alpha = 0.4)+
+  geom_smooth(method= "lm", colour= "black")+
+  labs(
+    title= "Unemployment vs Personal Savings Rate (1967-2015)",
+    x= "Number Unemployed(thousands)",
+    y= "Personal Savings Rate (%)"
+)
+
+cat("
+The scatter plot reveals a negative linear relationship between unemployment 
+and the personal savings rate over the period 1967-2015, as shown by the 
+downward-sloping regression line. While one might expect higher unemployment 
+rates to increase precautionary saving, the long-run trend suggests that 
+sustained joblessness forces households to draw down on savings to meet daily 
+living expenses. 
+
+However, the wide dispersion of points around the regression 
+line indicate that unemployment alone explains only a modest share of variation 
+in savings behaviour, suggesting other factors such as interest rates, wealth 
+effects and income effects playing a role.     
+")
+```
